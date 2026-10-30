@@ -26,13 +26,13 @@ int main(int argc, char** argv)
     
 //    #ifdef G4MULTITHREADED
         G4MTRunManager * runManager = new G4MTRunManager();
-        runManager->SetNumberOfThreads(32);
+        runManager->SetNumberOfThreads(32); //run multithreaded over 32 cores
 //    #else
 //         G4RunManager * runManager = new G4RunManager();
 //    #endif
     
     G4PhysListFactory factory;
-    G4VModularPhysicsList* physList=factory.GetReferencePhysList("FTFP_BERT"); //add __SS for single scatter
+    G4VModularPhysicsList* physList=factory.GetReferencePhysList("FTFP_BERT"); 
     physList->ReplacePhysics(new G4EmLivermorePhysics);
 
     runManager->SetUserInitialization(new detectorConstruction());
