@@ -12,13 +12,12 @@
 #include "G4Tubs.hh"
 #include "G4SubtractionSolid.hh"
 
-//G4Array2 detConstruct
-
-
-
 detectorConstruction::detectorConstruction()//constructor
 {
     Thickness = 6;
+
+    //custom macro command to help in bash loop running
+    
     G4RunManager* runManager = G4RunManager::GetRunManager();
     Messenger = new G4GenericMessenger(this, "/detector/", "thickness");
     Messenger->DeclareProperty("thickness", Thickness, "Target thickness");
@@ -45,8 +44,6 @@ void detectorConstruction::DefineMaterials()
     Aluminium = nist->FindOrBuildMaterial("G4_Al");  //aluminium (material)
     Titanium = nist->FindOrBuildMaterial("G4_Ti");  //titanium (material)
     Tungsten= nist->FindOrBuildMaterial("G4_W");  //tungsten (material)
-    Beryllium = nist->FindOrBuildMaterial("G4_Be");
-    Gold = nist->FindOrBuildMaterial("G4_Au");
 
     //Elements
     Cr = nist->FindOrBuildElement("Cr"); //chromium
@@ -86,7 +83,7 @@ G4VPhysicalVolume * detectorConstruction::Construct()
 {
 
 //WORLD CREATION//
-    worldSolid = new G4Box("worldSolid", 50*cm, 50*cm, 100.*cm); //name and half size in m
+    worldSolid = new G4Box("worldSolid", 50*cm, 50*cm, 100.*cm); //name and half size 
 
     worldLogic = new G4LogicalVolume(worldSolid,   //call solid
                                      air,         //material to be made of
@@ -117,6 +114,7 @@ G4VPhysicalVolume * detectorConstruction::Construct()
                                         0, //copy number
                                         true); //check overlaps
 
+    //Simple phantom creation
     PhantomSolid = new G4Box("PhantomSolid", 150*mm, 120*mm, 250 * um); //name and half size in m
 
     G4cout << "Thickness is " << Thickness << G4endl;
@@ -134,6 +132,7 @@ G4VPhysicalVolume * detectorConstruction::Construct()
                                        0, //copy number
                                        true); //check overlaps
 
+    //Filter creation
     FilterSolid = new G4Box("FilterSolid", 150*mm, 120*mm, 1.25 * mm); //name and half size in m
 
     G4cout << "Thickness is " << Thickness << G4endl;
@@ -156,7 +155,6 @@ G4VPhysicalVolume * detectorConstruction::Construct()
 
 //DETECTOR CREATION
     detSolid = new G4Box("detSolid", 20*cm, 20*cm, 0.5*mm); //name and half size in m
-    //to match ipioni (which is 43 x 43 bin with 1cm/pixel you need 43/2 cm widths)
 
 
     detLogic = new G4LogicalVolume(detSolid,   //call solid
@@ -189,5 +187,5 @@ G4VPhysicalVolume * detectorConstruction::Construct()
 void detectorConstruction::ConstructSDandField()
 {
     SenDetClass *senDetA  = new SenDetClass("SensitiveDetector");
-    detLogic -> SetSensitiveDetector(senDetA);
+    detLogic -> SetSensitiveDetector(senDetA); //set desired logical volume as detecting layer
 }
