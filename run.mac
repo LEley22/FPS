@@ -1,0 +1,15 @@
+
+/run/setCut 5 um
+
+/run/initialize
+
+/run/reinitializeGeometry
+
+/process/em/deexcitationIgnoreCut true
+/process/em/fluo true
+/process/em/pixe true
+/process/em/auger true
+/process/em/deexcitation worldSolid true true true
+
+/process/em/deexcitation TargetSolid true true true
+/run/beamOn 10000
