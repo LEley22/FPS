@@ -26,10 +26,10 @@ G4bool SenDetClass::ProcessHits(G4Step *aStep, G4TouchableHistory * R0hist)
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
     man->FillNtupleIColumn(0, evt);                 //fill N tuple 
-    man->FillNtupleDColumn(1, posPhoton[0]);
-    man->FillNtupleDColumn(2, posPhoton[1]);
-    man->FillNtupleDColumn(3, posPhoton[2]);
-    man->FillNtupleDColumn(4, edep1);  //take INITIAL energy of photon at end (detector is air so should not affect E)
+    man->FillNtupleDColumn(1, posPhoton[0]);        //X pos
+    man->FillNtupleDColumn(2, posPhoton[1]);        //Y pos
+    man->FillNtupleDColumn(3, posPhoton[2]);        //Z pos
+    man->FillNtupleDColumn(4, edep1);  //energy deposited
     man->AddNtupleRow(0);
     
     man->FillH1(0, edep1);
