@@ -6,6 +6,7 @@
 /run/reinitializeGeometry
 
 /process/em/deexcitationIgnoreCut true
+/process/em/fluo true
 /process/em/fluoBearden true
 /process/em/pixe true
 /process/em/auger true
