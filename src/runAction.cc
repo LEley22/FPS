@@ -19,7 +19,8 @@ runAction::runAction()
     man->CreateNtupleDColumn("fZ");  //double columns with x,y,z coord of hit
     man->CreateNtupleDColumn("eDep");
     man->FinishNtuple(0); //finish this first Ntuple
-    
+
+    //Create histogram of 100 steps between 0 and 150 keV
     man->CreateH1("Eabs","Edep in detector", 100, 0., 150*keV);
 }
 
@@ -35,7 +36,7 @@ void runAction::BeginOfRunAction(const G4Run* run)
 
     std::stringstream strRunID;
         strRunID << runID;
-    
+    //Init time so filenames are unique and dont overwrite
     auto now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
 
@@ -48,7 +49,7 @@ void runAction::BeginOfRunAction(const G4Run* run)
     
     G4cout << histogramName << G4endl;
 
-        // Create the histogram
+        // Create the histogram of positions between -0.5m and 0.5m using 50 bins (analogous to det px)
     man->CreateH2(histogramName, "HitsXY",
                       50, -0.5 * m,  0.5 * m,
                       50, -0.5 * m,  0.5 * m,
@@ -71,7 +72,7 @@ void runAction::BeginOfRunAction(const G4Run* run)
 
 void runAction::EndOfRunAction(const G4Run *)
 {
-    
+    //thread safety
     std::lock_guard<std::mutex> lock(histogramMutex);
     
     G4AnalysisManager* man = G4AnalysisManager::Instance();
